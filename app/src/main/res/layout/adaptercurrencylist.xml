@@ -33,5 +33,33 @@
             android:text="CurrencyValue"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="32dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/transparentbuttoncolor"
+            android:backgroundTint="@color/white"
+            android:onClick="imputFrom"
+            android:padding="1dp"
+            android:text="From"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="32dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/transparentbuttoncolor"
+            android:backgroundTint="@color/white"
+            android:onClick="imputTo"
+            android:padding="1dp"
+            android:text="To"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
     </LinearLayout>
 </LinearLayout>
