@@ -13,48 +13,33 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintEnd_toStartOf="@+id/button8"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logocurrencyapp" />
 
     <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/gradientbuttoncolor"
-        android:backgroundTint="@color/white"
-        android:text="List"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/button8"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/button8"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/gradientbuttoncolor"
         android:backgroundTint="@color/white"
         android:onClick="toggleGuideLine"
-        android:text="Convert"
+        android:text="List"
         android:textColor="@color/black"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button6"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="44dp"
         android:fontFamily="sans-serif-black"
         android:text="Currency Converter"
         android:textSize="12sp"
@@ -89,64 +74,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView2" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
-
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="USD"
+    <Spinner
+        android:id="@+id/spinnerTo"
+        android:layout_width="102dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/searchView2"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
-
-    <SearchView
-        android:id="@+id/searchView2"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="BRL"
-        app:layout_constraintEnd_toStartOf="@+id/searchView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6">
-
-    </SearchView>
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/activitybackground"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerCurrency"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="15dp"
-                android:paddingTop="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="15dp" />
-        </LinearLayout>
-    </FrameLayout>
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <TextView
         android:id="@+id/textView3"
@@ -158,6 +94,16 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerFrom"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView2" />
+
+    <Spinner
+        android:id="@+id/spinnerFrom"
+        android:layout_width="104dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/searchView2" />
 
     <TextView
@@ -172,24 +118,70 @@
         app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
-    <Spinner
-        android:id="@+id/spinnerFrom"
-        android:layout_width="50dp"
+    <SearchView
+        android:id="@+id/searchView2"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        android:layout_marginTop="115dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="BRL"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/searchView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Spinner
-        android:id="@+id/spinnerTo"
-        android:layout_width="50dp"
+    </SearchView>
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="115dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="USD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintStart_toEndOf="@+id/searchView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/framebackground"
+            android:orientation="vertical">
+
+            <SearchView
+                android:id="@+id/recyclesearch"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search . . ." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerCurrency"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="15dp" />
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

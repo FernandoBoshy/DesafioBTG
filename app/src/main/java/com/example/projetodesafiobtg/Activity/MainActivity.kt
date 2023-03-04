@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spinnerTo: Spinner
     private lateinit var editValue: EditText
     private lateinit var textResult: TextView
+    private lateinit var searchRecyclerView: SearchView
 
 
     lateinit var recyclerCurrency: RecyclerView
@@ -36,9 +40,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //  Listener do editValue para alteração de valor do TextView
-
         editValue = findViewById(R.id.editValue)
+        spinnerFrom = findViewById(R.id.spinnerFrom)
+        spinnerTo = findViewById(R.id.spinnerTo)
+        textResult = findViewById(R.id.textResult)
+        searchRecyclerView = findViewById(R.id.recyclesearch)
+
+        currenciesList = ArrayList()
+        getCurrency()
+
+        //  Listener do editValue para alteração de valor do TextView
         editValue.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 println("before change")
@@ -49,39 +60,22 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                textResult = findViewById(R.id.textResult)
-                textResult.setText("mudou o texto = $p0")
-
-                TODO("colocar o resultado da conversão da moeda 'from' e 'to' no TextResultado")
+                convertMoney()
             }
 
         })
 
-
-        //listagem de moedas
-        currenciesList = ArrayList()
-        generateCurrency()
-
         recyclerCurrency = findViewById(R.id.recyclerCurrency)
-        // Adapter
-        val adapter: AdapterCurrency = AdapterCurrency(currenciesList)
 
+        // Adapter do recyclerView
+
+        val adapterRecycler: AdapterCurrency = AdapterCurrency(currenciesList)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         recyclerCurrency.layoutManager = layoutManager
         recyclerCurrency.adapter
         recyclerCurrency.setHasFixedSize(true)
-        recyclerCurrency.adapter = adapter
+        recyclerCurrency.adapter = adapterRecycler
 
-
-    }
-
-    fun generateCurrency(){
-        val currency: Currencies = Currencies(currencyName = "DOLAR", currencySign = "USD", currencyValue = "5.0")
-        currenciesList.add(currency)
-        val currency2: Currencies = Currencies(currencyName = "EURO", currencySign = "EUR", currencyValue = "6.3")
-        currenciesList.add(currency2)
-        val currency3: Currencies = Currencies(currencyName = "REAL", currencySign = "BRL", currencyValue = "1.0")
-        currenciesList.add(currency3)
 
     }
 
@@ -96,17 +90,57 @@ class MainActivity : AppCompatActivity() {
 
         guideLine.layoutParams = layoutParams
     }
-    fun getCurrency(){
-        val retrofitClient = RetrofitNetwork.getRetrofit("http://cdn.jsdelivr.net/")
+    fun convertMoney(){
+        val retrofitClient = RetrofitNetwork.getRetrofit("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(EndPoint::class.java)
 
-        endpoint.getCurrencies().enqueue(object: Callback<JsonObject>{
+        endpoint.getCurrencyRate(spinnerFrom.selectedItem.toString(), spinnerTo.selectedItem.toString()).enqueue(object :
+            Callback<JsonObject>{
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                var data = response.body()?.entrySet()?.find { it.key == spinnerTo.selectedItem.toString() }
+                val rate: Double = data?.value.toString().toDouble()
+                var conversion = editValue.text.toString().toDouble() * rate
+                textResult.setText(conversion.toString())
+                println(data)
+
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                println("não deu")
+            }
+
+        })
+
+    }
+    fun getCurrency(){
+        val retrofitClient = RetrofitNetwork.getRetrofit("https://cdn.jsdelivr.net/")
+        val endpoint = retrofitClient.create(EndPoint::class.java)
+
+        endpoint.getCurrencies().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val data = mutableListOf<String>()
 
                 response.body()?.keySet()?.iterator()?.forEach {
                     data.add(it)
                 }
+
+                response.body()?.entrySet()?.iterator()?.forEach {
+                    var key = it.key
+                    var value = it.value
+                    currenciesList.add(Currencies(value.toString(), key.toString()))
+
+
+                }
+
+
+                //  adapter do Spinner
+                val posBRL = data.indexOf("brl")
+                val posUSD = data.indexOf("usd")
+                val adapterSp = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, data)
+                spinnerFrom.adapter = adapterSp
+                spinnerTo.adapter = adapterSp
+                spinnerFrom.setSelection(posBRL)
+                spinnerTo.setSelection(posUSD)
 
             }
 
@@ -115,13 +149,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-    }
-    fun imputFrom(view: View){
-        toggleGuideLine(view)
-    }
-    fun imputTo(view: View){
-        toggleGuideLine(view)
-
     }
 
 }

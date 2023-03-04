@@ -17,7 +17,7 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyName: TextView = itemView.findViewById(R.id.idCurrencyName)
         val currencySign: TextView = itemView.findViewById(R.id.idCurrencySign)
-        val currencyValue: TextView = itemView.findViewById(R.id.idCurrencyValue)
+
 
     }
 
@@ -37,6 +37,5 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
         val item: Currencies = listaCurrency[position]
         holder.currencyName.setText(item.currencyName)
         holder.currencySign.setText(item.currencySign)
-        holder.currencyValue.setText(item.currencyValue)
     }
 }
