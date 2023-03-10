@@ -12,13 +12,16 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
 
     private var listaCurrency: MutableList<Currencies> = list
 
-
-
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyName: TextView = itemView.findViewById(R.id.idCurrencyName)
         val currencySign: TextView = itemView.findViewById(R.id.idCurrencySign)
+    }
 
-
+    fun setFilterList(newList: MutableList<Currencies>){
+//        listaCurrency.clear()
+//        this.listaCurrency = newList
+        listaCurrency = newList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -38,4 +41,5 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
         holder.currencyName.setText(item.currencyName)
         holder.currencySign.setText(item.currencySign)
     }
+
 }
