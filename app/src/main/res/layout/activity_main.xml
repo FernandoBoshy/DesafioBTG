@@ -12,14 +12,15 @@
         android:id="@+id/frameLayoutMid"
         android:layout_width="124dp"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="54dp"
         android:background="#668542"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchFrom">
 
         <ListView
-            android:id="@+id/recyclerCurrencyfrom"
+            android:id="@+id/listViewMid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="15dp"
@@ -103,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/searchTo" />
+        app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
 
     <TextView
         android:id="@+id/textView3"
@@ -137,7 +138,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spinnerTo"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
-        app:layout_constraintTop_toBottomOf="@+id/searchTo" />
+        app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
 
     <SearchView
         android:id="@+id/searchFrom"
@@ -146,24 +147,12 @@
         android:layout_marginTop="115dp"
         android:iconifiedByDefault="false"
         android:queryHint="BRL"
-        app:layout_constraintEnd_toStartOf="@+id/searchTo"
+        app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent">
 
     </SearchView>
-
-    <SearchView
-        android:id="@+id/searchTo"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="115dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="USD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/searchFrom"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -192,8 +181,8 @@
                 android:id="@+id/searchinside"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:iconifiedByDefault="false"
                 android:layout_margin="10dp"
+                android:iconifiedByDefault="false"
                 android:queryHint="Search . . ." />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -206,5 +195,29 @@
                 android:paddingBottom="15dp" />
         </LinearLayout>
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Click to ↓↓↓"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/searchFrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button8" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="LongClick to ↓↓↓"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/searchFrom"
+        app:layout_constraintTop_toBottomOf="@+id/button8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

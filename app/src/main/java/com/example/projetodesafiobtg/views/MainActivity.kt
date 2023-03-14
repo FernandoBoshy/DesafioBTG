@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ListView
 //import android.widget.SearchView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var currenciesList: MutableList<Currencies>
     lateinit var CurrenciesListTemp: MutableList<Currencies>
     lateinit var adapter: AdapterCurrency
-//    lateinit var adapterSV: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +53,7 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        binding.recyclerCurrencyfrom.adapter = adapterSV
-
+        binding.listViewMid.adapter = adapterSV
 
         //  Listener do editValue para alteração de valor do TextView
         binding.editValue.addTextChangedListener(object : TextWatcher {
@@ -120,32 +119,52 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        binding.searchTo.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
+//        binding.searchTo.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+//            android.widget.SearchView.OnQueryTextListener {
+//
+//            override fun onQueryTextSubmit(newText: String?): Boolean {
+//                binding.searchTo.clearFocus()
+//                if(dataSV.contains(newText)){
+//                    adapterSV.filter.filter(newText)
+//
+//                }
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                if(newText.isNullOrEmpty() || !binding.searchTo.hasFocus()){
+//                    binding.frameLayoutMid.visibility = View.GONE
+//                } else {
+//                    binding.frameLayoutMid.visibility = View.VISIBLE
+//                    adapterSV.filter.filter(newText)
+//
+//                }
+//                return false
+//            }
+//
+//        })
 
-            override fun onQueryTextSubmit(newText: String?): Boolean {
-                binding.searchTo.clearFocus()
-                if(dataSV.contains(newText)){
-                    adapterSV.filter.filter(newText)
-
+        binding.listViewMid.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
+            val spinnerAdapter = binding.spinnerFrom.adapter
+            for (x in 0 until spinnerAdapter.count) {
+                if (spinnerAdapter.getItem(x) == selectedItem) {
+                    binding.spinnerFrom.setSelection(x)
+                    break
                 }
-                return false
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText.isNullOrEmpty() || !binding.searchTo.hasFocus()){
-                    binding.frameLayoutMid.visibility = View.GONE
-                } else {
-                    binding.frameLayoutMid.visibility = View.VISIBLE
-                    adapterSV.filter.filter(newText)
-
+        }
+        binding.listViewMid.setOnItemLongClickListener { parent, view, position, id ->
+            val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
+            val spinnerAdapter = binding.spinnerTo.adapter
+            for (x in 0 until spinnerAdapter.count) {
+                if (spinnerAdapter.getItem(x) == selectedItem) {
+                    binding.spinnerTo.setSelection(x)
+                    break
                 }
-                return false
             }
-
-        })
-
-
+            true
+        }
     }
 
 
