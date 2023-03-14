@@ -29,16 +29,31 @@ class MainActivity : AppCompatActivity() {
     lateinit var currenciesList: MutableList<Currencies>
     lateinit var CurrenciesListTemp: MutableList<Currencies>
     lateinit var adapter: AdapterCurrency
+//    lateinit var adapterSV: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currenciesList = ArrayList()
-        adapter = AdapterCurrency(currenciesList)
+
 
         val data2 = mutableListOf<String>()
+        var dataSV = mutableListOf<String>()
+
+        getCurrency(data2)
+        dataSV = data2
+        currenciesList = ArrayList()
+
+        adapter = AdapterCurrency(currenciesList)
+        val adapterSV: ArrayAdapter<String> = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            dataSV
+        )
+
+
+        binding.recyclerCurrencyfrom.adapter = adapterSV
 
 
         //  Listener do editValue para alteração de valor do TextView
@@ -65,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             adapter = AdapterCurrency(currenciesList)
         }
 
+
         binding.searchinside.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -81,17 +97,55 @@ class MainActivity : AppCompatActivity() {
         })
         binding.searchFrom.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                TODO("Not yet implemented")
+
+            override fun onQueryTextSubmit(newText: String?): Boolean {
+                binding.searchFrom.clearFocus()
+                if(dataSV.contains(newText)){
+                    adapterSV.filter.filter(newText)
+
+                }
+                return false
             }
 
-            override fun onQueryTextChange(p0: String?): Boolean {
-                TODO("Not yet implemented")
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText.isNullOrEmpty() || !binding.searchFrom.hasFocus()){
+                    binding.frameLayoutMid.visibility = View.GONE
+                } else {
+                    binding.frameLayoutMid.visibility = View.VISIBLE
+                    adapterSV.filter.filter(newText)
+
+                }
+                return false
             }
 
         })
 
-        getCurrency(data2)
+        binding.searchTo.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(newText: String?): Boolean {
+                binding.searchTo.clearFocus()
+                if(dataSV.contains(newText)){
+                    adapterSV.filter.filter(newText)
+
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText.isNullOrEmpty() || !binding.searchTo.hasFocus()){
+                    binding.frameLayoutMid.visibility = View.GONE
+                } else {
+                    binding.frameLayoutMid.visibility = View.VISIBLE
+                    adapterSV.filter.filter(newText)
+
+                }
+                return false
+            }
+
+        })
+
+
     }
 
 
@@ -146,7 +200,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                println("não deu")
+                println("convertMoney falhou")
             }
 
         })
@@ -188,7 +242,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                println("falhou")
+                println("getCurrency falhou")
             }
         })
     }

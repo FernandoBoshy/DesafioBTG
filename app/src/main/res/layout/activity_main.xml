@@ -8,6 +8,27 @@
     android:orientation="vertical"
     tools:context=".views.MainActivity">
 
+    <FrameLayout
+        android:id="@+id/frameLayoutMid"
+        android:layout_width="124dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:background="#668542"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchFrom">
+
+        <ListView
+            android:id="@+id/recyclerCurrencyfrom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp" />
+
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="64dp"
