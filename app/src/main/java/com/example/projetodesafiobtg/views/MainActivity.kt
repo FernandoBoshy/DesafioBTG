@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var currenciesList: MutableList<Currencies>
-    lateinit var CurrenciesListTemp: MutableList<Currencies>
     lateinit var adapter: AdapterCurrency
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,22 +35,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         val data2 = mutableListOf<String>()
-        var dataSV = mutableListOf<String>()
-
         getCurrency(data2)
-        dataSV = data2
         currenciesList = ArrayList()
-
         adapter = AdapterCurrency(currenciesList)
+
         val adapterSV: ArrayAdapter<String> = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            dataSV
+            data2
         )
-
 
         binding.listViewMid.adapter = adapterSV
 
@@ -66,20 +59,26 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (!p0.isNullOrEmpty()) {
-                    convertMoney()
+                var editTextValue = p0.toString()
+                if (editTextValue == ".") {
+                    binding.editValue.setText("0.")
+                    binding.editValue.setSelection(2)
+                } else {
+                    if(!editTextValue.isNullOrEmpty()){
+                        convertMoney()
+                    }
                 }
-
             }
         })
 
+//      Adapter recyclerview da lista de moedas
         binding.recyclerCurrency.apply {
             layoutManager = LinearLayoutManager(applicationContext)
             setHasFixedSize(true)
-            adapter = AdapterCurrency(currenciesList)
+            adapter = this@MainActivity.adapter
         }
 
-
+//      Listener do searchView que fica junto da lista de moedas
         binding.searchinside.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -87,19 +86,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                println(currenciesList.count())
                 filterList(newText)
-                println(currenciesList.count() +1)
                 return true
             }
 
         })
+
+//      Listener do searchView que procura as moedas que vão entrar nos spinners
         binding.searchFrom.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(newText: String?): Boolean {
                 binding.searchFrom.clearFocus()
-                if(dataSV.contains(newText)){
+                if(data2.contains(newText)){
                     adapterSV.filter.filter(newText)
 
                 }
@@ -119,31 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-//        binding.searchTo.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-//            android.widget.SearchView.OnQueryTextListener {
-//
-//            override fun onQueryTextSubmit(newText: String?): Boolean {
-//                binding.searchTo.clearFocus()
-//                if(dataSV.contains(newText)){
-//                    adapterSV.filter.filter(newText)
-//
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                if(newText.isNullOrEmpty() || !binding.searchTo.hasFocus()){
-//                    binding.frameLayoutMid.visibility = View.GONE
-//                } else {
-//                    binding.frameLayoutMid.visibility = View.VISIBLE
-//                    adapterSV.filter.filter(newText)
-//
-//                }
-//                return false
-//            }
-//
-//        })
-
+//      Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique CURTO)
         binding.listViewMid.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
             val spinnerAdapter = binding.spinnerFrom.adapter
@@ -154,6 +129,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+//      Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique LONGO)
+
         binding.listViewMid.setOnItemLongClickListener { parent, view, position, id ->
             val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
             val spinnerAdapter = binding.spinnerTo.adapter
@@ -167,21 +145,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+//  funções //
 
     fun filterList(query: String?) {
         var tempFilterListVar = currenciesList
         if (query != null) {
             var filterListVar = ArrayList<Currencies>()
 
-            for (item in currenciesList) {
+            for (item in tempFilterListVar) {
                 if (item.currencySign?.lowercase(Locale.ROOT)?.contains(query.lowercase())!!) {
                     filterListVar.add(item)
                 }
+                if (item.currencyName?.lowercase(Locale.ROOT)?.contains(query.lowercase())!!) {
+                    filterListVar.add(item)
+                }
             }
-            if (filterListVar.isNotEmpty()) {
-                adapter.setFilterList(filterListVar)
-                println(filterListVar.toString())
-            }
+            adapter.setFilterList(filterListVar.distinct().toMutableList())
         }
     }
 
@@ -211,10 +190,11 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 var data = response.body()?.entrySet()
                     ?.find { it.key == binding.spinnerTo.selectedItem.toString() }
+
                 val rate: Double = data?.value.toString().toDouble()
                 var conversion = binding.editValue.text.toString().toDouble() * rate
-                binding.textResult.text = conversion.toString()
-                println(data)
+
+                binding.textResult.text = String.format("%.2f", conversion)
 
             }
 

@@ -18,8 +18,6 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
     }
 
     fun setFilterList(newList: MutableList<Currencies>){
-//        listaCurrency.clear()
-//        this.listaCurrency = newList
         listaCurrency = newList
         notifyDataSetChanged()
     }

@@ -5,9 +5,7 @@ class Currencies{
     var currencySign: String? = ""
 
 
-    constructor(){
-
-    }
+    constructor(){}
     constructor(currencyName: String?, currencySign: String?){
         this.currencyName = currencyName
         this.currencySign = currencySign

@@ -8,10 +8,35 @@
     android:orientation="vertical"
     tools:context=".views.MainActivity">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Click to ↓↓↓"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/searchFrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button8" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="LongClick to ↓↓↓"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/searchFrom"
+        app:layout_constraintTop_toBottomOf="@+id/button8" />
+
     <FrameLayout
         android:id="@+id/frameLayoutMid"
-        android:layout_width="124dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="54dp"
         android:background="#668542"
         android:visibility="invisible"
@@ -91,6 +116,7 @@
         android:ems="10"
         android:hint="Value"
         android:inputType="numberDecimal"
+        android:maxLength="16"
         app:layout_constraintEnd_toStartOf="@+id/textResult"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -195,29 +221,5 @@
                 android:paddingBottom="15dp" />
         </LinearLayout>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Click to ↓↓↓"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/searchFrom"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="LongClick to ↓↓↓"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/searchFrom"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
