@@ -1,14 +1,13 @@
 package com.example.projetodesafiobtg.views
 
+//import android.widget.SearchView
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ListView
-//import android.widget.SearchView
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,15 +58,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                var editTextValue = p0.toString()
+                val editTextValue = p0.toString()
                 if (editTextValue == ".") {
                     binding.editValue.setText("0.")
                     binding.editValue.setSelection(2)
                 } else {
-                    if(!editTextValue.isNullOrEmpty()){
+                    if(!editTextValue.isEmpty()){
                         convertMoney()
+                        println("")
                     }
                 }
+                println("after change")
             }
         })
 
@@ -95,7 +96,6 @@ class MainActivity : AppCompatActivity() {
 //      Listener do searchView que procura as moedas que vão entrar nos spinners
         binding.searchFrom.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
-
             override fun onQueryTextSubmit(newText: String?): Boolean {
                 binding.searchFrom.clearFocus()
                 if(data2.contains(newText)){
@@ -188,13 +188,20 @@ class MainActivity : AppCompatActivity() {
         ).enqueue(object :
             Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                var data = response.body()?.entrySet()
-                    ?.find { it.key == binding.spinnerTo.selectedItem.toString() }
 
+                val data = response.body()?.entrySet()?.find { it.key == binding.spinnerTo.selectedItem.toString() }
                 val rate: Double = data?.value.toString().toDouble()
-                var conversion = binding.editValue.text.toString().toDouble() * rate
 
-                binding.textResult.text = String.format("%.2f", conversion)
+//                val conversion = binding.editValue.text.toString().toDouble()  * rate
+
+//                val conversion = (binding.editValue.text?.toString()?: 0.0.toDouble()?: 0.0)  * rate
+                
+                val conversion = (binding.editValue.text?.toString() ?: "0.0")
+                val conversion2 = if(conversion.isEmpty()) 0.0 * rate else conversion.toDouble() * rate
+
+//                val conversion = if (!binding.editValue.text.isEmpty()) binding.editValue.text.toString().toDouble() * rate else 0.0
+
+                binding.textResult.text = String.format("%.2f", conversion2)
 
             }
 
@@ -207,9 +214,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getCurrency(data: MutableList<String>) {
+
         val retrofitClient = RetrofitNetwork.getRetrofit("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(EndPoint::class.java)
-
 
         endpoint.getCurrencies().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -223,15 +230,13 @@ class MainActivity : AppCompatActivity() {
                     var key = it.key
                     var value = it.value
                     currenciesList.add(Currencies(value.toString(), key.toString()))
-
-
                 }
-
 
                 //  adapter do Spinner
                 val posBRL = data.indexOf("brl")
                 val posUSD = data.indexOf("usd")
                 val adapterSp = ArrayAdapter(baseContext, android.R.layout.simple_list_item_1, data)
+
                 binding.apply {
                     spinnerFrom.adapter = adapterSp
                     spinnerTo.adapter = adapterSp
