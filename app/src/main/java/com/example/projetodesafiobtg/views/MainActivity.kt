@@ -44,10 +44,27 @@ class MainActivity : AppCompatActivity() {
             android.R.layout.simple_list_item_1,
             data2
         )
-
         binding.listViewMid.adapter = adapterSV
 
-        //  Listener do editValue para alteração de valor do TextView
+//      Adapter recyclerview da lista de moedas
+        binding.recyclerCurrency.apply {
+            layoutManager = LinearLayoutManager(applicationContext)
+            setHasFixedSize(true)
+            adapter = this@MainActivity.adapter
+        }
+
+        listenerUpdateEditValue()
+
+        listenerSearchUpdateSpinner()
+
+        listenerCurrencyFrame(data2, adapterSV)
+
+        listenerSearchUpdateCurrencyList()
+    }
+
+//  funções //
+
+    fun listenerUpdateEditValue(){
         binding.editValue.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 println("before change")
@@ -65,21 +82,15 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     if(!editTextValue.isEmpty()){
                         convertMoney()
-                        println("")
                     }
                 }
                 println("after change")
             }
         })
+    }
 
-//      Adapter recyclerview da lista de moedas
-        binding.recyclerCurrency.apply {
-            layoutManager = LinearLayoutManager(applicationContext)
-            setHasFixedSize(true)
-            adapter = this@MainActivity.adapter
-        }
 
-//      Listener do searchView que fica junto da lista de moedas
+    fun listenerSearchUpdateCurrencyList(){
         binding.searchinside.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -92,8 +103,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
 
-//      Listener do searchView que procura as moedas que vão entrar nos spinners
+    fun listenerCurrencyFrame(data2: MutableList<String>,adapterSV: ArrayAdapter<String>){
         binding.searchFrom.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newText: String?): Boolean {
@@ -104,21 +116,21 @@ class MainActivity : AppCompatActivity() {
                 }
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText.isNullOrEmpty() || !binding.searchFrom.hasFocus()){
                     binding.frameLayoutMid.visibility = View.GONE
                 } else {
                     binding.frameLayoutMid.visibility = View.VISIBLE
                     adapterSV.filter.filter(newText)
-
                 }
                 return false
             }
 
         })
+    }
 
-//      Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique CURTO)
+    fun listenerSearchUpdateSpinner(){
+        //  Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique CURTO)
         binding.listViewMid.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
             val spinnerAdapter = binding.spinnerFrom.adapter
@@ -129,9 +141,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-//      Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique LONGO)
-
+        //  Listener para alterar a lista de moedas da caixa-lista de moedas dos spinners (clique LONGO)
         binding.listViewMid.setOnItemLongClickListener { parent, view, position, id ->
             val selectedItem = binding.listViewMid.adapter.getItem(position).toString()
             val spinnerAdapter = binding.spinnerTo.adapter
@@ -145,7 +155,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//  funções //
 
     fun filterList(query: String?) {
         var tempFilterListVar = currenciesList
@@ -191,17 +200,9 @@ class MainActivity : AppCompatActivity() {
 
                 val data = response.body()?.entrySet()?.find { it.key == binding.spinnerTo.selectedItem.toString() }
                 val rate: Double = data?.value.toString().toDouble()
+                val conversion = if (!binding.editValue.text.isEmpty()) binding.editValue.text.toString().toDouble() * rate else 0.0
 
-//                val conversion = binding.editValue.text.toString().toDouble()  * rate
-
-//                val conversion = (binding.editValue.text?.toString()?: 0.0.toDouble()?: 0.0)  * rate
-                
-                val conversion = (binding.editValue.text?.toString() ?: "0.0")
-                val conversion2 = if(conversion.isEmpty()) 0.0 * rate else conversion.toDouble() * rate
-
-//                val conversion = if (!binding.editValue.text.isEmpty()) binding.editValue.text.toString().toDouble() * rate else 0.0
-
-                binding.textResult.text = String.format("%.2f", conversion2)
+                binding.textResult.text = String.format("%.2f", conversion)
 
             }
 
