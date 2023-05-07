@@ -9,24 +9,26 @@
     tools:context=".views.MainActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="Click to ↓↓↓"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/searchFrom"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonToList" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textViewTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="LongClick to ↓↓↓"
+        android:text="Hold to ↓↓↓"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/searchFrom"
@@ -34,15 +36,13 @@
 
     <FrameLayout
         android:id="@+id/frameLayoutMid"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="54dp"
+        android:layout_width="191dp"
+        android:layout_height="117dp"
         android:background="#668542"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchFrom">
+        app:layout_constraintStart_toEndOf="@+id/editValue"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerTo">
 
         <ListView
             android:id="@+id/listViewMid"
@@ -127,31 +127,19 @@
         android:layout_width="130dp"
         android:layout_height="49dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gradientbuttoncolor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="From"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerFrom"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
 
     <Spinner
         android:id="@+id/spinnerFrom"
         android:layout_width="130dp"
         android:layout_height="48dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
+        android:background="@drawable/gradientbuttoncolor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
 
     <TextView
@@ -159,10 +147,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="To"
-        android:textSize="20sp"
+        android:text="← FROM / TO →"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/spinnerTo"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinnerFrom"
         app:layout_constraintTop_toBottomOf="@+id/searchFrom" />
 
@@ -171,11 +159,12 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="115dp"
+        android:background="@drawable/gradientbuttoncolor"
         android:iconifiedByDefault="false"
         android:queryHint="BRL"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/textViewTo"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textViewFrom"
         app:layout_constraintTop_toTopOf="parent">
 
     </SearchView>

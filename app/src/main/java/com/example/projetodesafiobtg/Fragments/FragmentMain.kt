@@ -1,4 +1,4 @@
-package com.example.projetodesafiobtg.Fragments
+package com.example.projetodesafiobtg.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.projetodesafiobtg.Adapter.AdapterCurrency
-import com.example.projetodesafiobtg.Model.Currencies
-import com.example.projetodesafiobtg.Network.EndPoint
-import com.example.projetodesafiobtg.Network.RetrofitNetwork
+import com.example.projetodesafiobtg.model.Currency
+import com.example.projetodesafiobtg.network.EndPoint
+import com.example.projetodesafiobtg.network.RetrofitNetwork
 import com.example.projetodesafiobtg.R
 import com.example.projetodesafiobtg.databinding.FragmentPrincipalBinding
 import com.google.gson.JsonObject
@@ -27,21 +26,18 @@ import java.util.*
 class FragmentMain : Fragment() {
 
     private lateinit var binding: FragmentPrincipalBinding
-    lateinit var currenciesList: MutableList<Currencies>
+    lateinit var currenciesList: MutableList<Currency>
     lateinit var adapter: AdapterCurrency
     lateinit var data2: MutableList<String>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPrincipalBinding.inflate(inflater, container, false)
 
         binding.buttonToList.setOnClickListener {
-            fragmentManager?.beginTransaction()?.replace(R.id.navManagerFragment, FragmentList())?.commit()
+           findNavController().navigate(R.id.fragment_main_to_list)
         }
 
         return binding.root
@@ -49,7 +45,8 @@ class FragmentMain : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        data2 = mutableListOf<String>()
+        data2 = mutableListOf()
+        binding.editValue.setText("")
 
         getCurrency(data2)
         currenciesList = ArrayList()
@@ -62,11 +59,11 @@ class FragmentMain : Fragment() {
         )
         binding.listViewMid.adapter = adapterSV
 
-        listenerUpdateEditValue()
-
         listenerSearchUpdateSpinner()
 
         listenerCurrencyFrame(data2, adapterSV)
+
+        listenerUpdateEditValue()
 
     }
 
@@ -87,29 +84,15 @@ class FragmentMain : Fragment() {
                     binding.editValue.setSelection(2)
                 } else {
                     if(!editTextValue.isEmpty()){
-                        convertMoney()
+                        if(binding.spinnerFrom.selectedItem != null || binding.spinnerTo.selectedItem != null) {
+                            convertMoney()
+                        }
                     }
                 }
                 println("after change")
             }
         })
     }
-
-
-//    fun listenerSearchUpdateCurrencyList(){
-//        binding.searchinside.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-//            android.widget.SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(p0: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                filterList(newText)
-//                return true
-//            }
-//
-//        })
-//    }
 
     fun listenerCurrencyFrame(data2: MutableList<String>,adapterSV: ArrayAdapter<String>){
         binding.searchFrom.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -125,8 +108,13 @@ class FragmentMain : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText.isNullOrEmpty() || !binding.searchFrom.hasFocus()){
                     binding.frameLayoutMid.visibility = View.GONE
+                    binding.textViewTo.visibility = View.GONE
+                    binding.textViewFrom.visibility = View.GONE
                 } else {
                     binding.frameLayoutMid.visibility = View.VISIBLE
+                    binding.textViewTo.visibility = View.VISIBLE
+                    binding.textViewFrom.visibility = View.VISIBLE
+                    binding.frameLayoutMid.bringToFront()
                     adapterSV.filter.filter(newText)
                 }
                 return false
@@ -165,13 +153,13 @@ class FragmentMain : Fragment() {
     fun filterList(query: String?) {
         val tempFilterListVar = currenciesList
         if (query != null) {
-            val filterListVar = ArrayList<Currencies>()
+            val filterListVar = ArrayList<Currency>()
 
             for (item in tempFilterListVar) {
-                if (item.currencySign?.lowercase(Locale.ROOT)?.contains(query.lowercase())!!) {
+                if (item.sign?.lowercase(Locale.ROOT)?.contains(query.lowercase()) == true) {
                     filterListVar.add(item)
                 }
-                if (item.currencyName?.lowercase(Locale.ROOT)?.contains(query.lowercase())!!) {
+                if (item.name?.lowercase(Locale.ROOT)?.contains(query.lowercase()) == true) {
                     filterListVar.add(item)
                 }
             }
@@ -182,10 +170,12 @@ class FragmentMain : Fragment() {
     fun convertMoney() {
         val retrofitClient = RetrofitNetwork.getRetrofit("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(EndPoint::class.java)
-
+        
         endpoint.getCurrencyRate(
+
             binding.spinnerFrom.selectedItem.toString(),
             binding.spinnerTo.selectedItem.toString()
+
         ).enqueue(object :
             Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
@@ -222,7 +212,7 @@ class FragmentMain : Fragment() {
                 response.body()?.entrySet()?.iterator()?.forEach {
                     val key = it.key
                     val value = it.value
-                    currenciesList.add(Currencies(value.toString(), key.toString()))
+                    currenciesList.add(Currency(value.toString(), key.toString()))
                 }
 
                 //  adapter do Spinner

@@ -1,4 +1,4 @@
-package com.example.projetodesafiobtg.Network
+package com.example.projetodesafiobtg.network
 
 import com.google.gson.JsonObject
 import retrofit2.Call

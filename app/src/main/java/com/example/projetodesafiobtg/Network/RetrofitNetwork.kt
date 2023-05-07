@@ -1,4 +1,4 @@
-package com.example.projetodesafiobtg.Network
+package com.example.projetodesafiobtg.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

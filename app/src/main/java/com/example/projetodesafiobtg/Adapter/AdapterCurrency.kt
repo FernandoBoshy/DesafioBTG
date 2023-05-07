@@ -5,19 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projetodesafiobtg.Model.Currencies
+import com.example.projetodesafiobtg.model.Currency
 import com.example.projetodesafiobtg.R
 
-class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<AdapterCurrency.MyViewHolder>() {
+class AdapterCurrency(list: MutableList<Currency>): RecyclerView.Adapter<AdapterCurrency.MyViewHolder>() {
 
-    private var listaCurrency: MutableList<Currencies> = list
+    private var listaCurrency: MutableList<Currency> = list
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val currencyName: TextView = itemView.findViewById(R.id.idCurrencyName)
         val currencySign: TextView = itemView.findViewById(R.id.idCurrencySign)
     }
 
-    fun setFilterList(newList: MutableList<Currencies>){
+    fun setFilterList(newList: MutableList<Currency>){
         listaCurrency = newList
         notifyDataSetChanged()
     }
@@ -35,9 +35,9 @@ class AdapterCurrency(list: MutableList<Currencies>): RecyclerView.Adapter<Adapt
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item: Currencies = listaCurrency[position]
-        holder.currencyName.setText(item.currencyName)
-        holder.currencySign.setText(item.currencySign)
+        val item: Currency = listaCurrency[position]
+        holder.currencyName.setText(item.name)
+        holder.currencySign.setText(item.sign)
     }
 
 }

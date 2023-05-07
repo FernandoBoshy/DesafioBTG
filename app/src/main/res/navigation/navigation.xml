@@ -6,20 +6,19 @@
     app:startDestination="@id/fragmentPrincipal">
     <fragment
         android:id="@+id/fragmentPrincipal"
-        android:name="com.example.projetodesafiobtg.Fragments.FragmentPrincipal"
+        android:name="com.example.projetodesafiobtg.fragments.FragmentMain"
         android:label="fragment_principal"
         tools:layout="@layout/fragment_principal" >
         <action
-            android:id="@+id/fragment_Main_To_List"
-            app:destination="@id/fragment_List" />
+            android:id="@+id/fragment_main_to_list"
+            app:destination="@id/fragmentList" />
     </fragment>
     <fragment
-        android:id="@+id/fragment_List"
-        android:name="com.example.projetodesafiobtg.Fragments.Fragment_List"
-        android:label="fragment__list"
-        tools:layout="@layout/fragment__list" >
+        android:id="@+id/fragmentList"
+        android:name="com.example.projetodesafiobtg.fragments.FragmentList"
+        android:label="fragment_list" >
         <action
-            android:id="@+id/fragment_List_To_Main"
+            android:id="@+id/fragment_list_to_main"
             app:destination="@id/fragmentPrincipal" />
     </fragment>
 </navigation>
