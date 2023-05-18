@@ -170,7 +170,7 @@ class FragmentMain : Fragment() {
     fun convertMoney() {
         val retrofitClient = RetrofitNetwork.getRetrofit("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(EndPoint::class.java)
-        
+
         endpoint.getCurrencyRate(
 
             binding.spinnerFrom.selectedItem.toString(),
